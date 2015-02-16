@@ -9,8 +9,6 @@
     android:background="@color/main_background"
     tools:context=".MainActivity">
 
-
-
     <ImageView
         android:id="@+id/banner"
         android:layout_width="300dp"
