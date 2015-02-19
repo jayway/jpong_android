@@ -1,4 +1,4 @@
-# jpong_android
+# Pong UI for android
 
 Agenda for 2015-02-27 competences-day.
 
