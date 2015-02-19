@@ -38,10 +38,19 @@
         style="@style/MainButton"/>
 
     <Button
-        android:id="@+id/about_button"
+        android:id="@+id/chat_button"
         android:layout_width="200dp"
         android:layout_height="wrap_content"
         android:layout_below="@id/match_history_button"
+        android:layout_centerHorizontal="true"
+        android:text="@string/chat"
+        style="@style/MainButton"/>
+
+    <Button
+        android:id="@+id/about_button"
+        android:layout_width="200dp"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/chat_button"
         android:layout_centerHorizontal="true"
         android:text="@string/about"
         style="@style/MainButton"/>
