@@ -1,6 +1,6 @@
 # jpong_android
 
-Agenda for 2015-02-27 competens-day.
+Agenda for 2015-02-27 competences-day.
 
 Try out some frameworks for fetching images/json data over the network and for annotating your app (getting rid of boilerplate code).
 
