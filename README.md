@@ -23,6 +23,12 @@ Robodjuce - https://github.com/roboguice/roboguice - an annotation / injection f
 Know of any other frameworks? add them here!
 
 
-1. Fetch data from the json feeds and populate the "Math history" page using some or all of the frameworks.
-2. Fetch the Jayway logo from the server.
-3. Remove all boilerplate code using annotations.
+1. Fetch data from http://somehost:3000/match_history.json and populate the "Math history" page using some or all of the frameworks. http://somehost:3000/match_history.json
+The server can be found at https://github.com/jayway/KHelgGameServer
+Run the server and use the static match_history.json to get some data for your "Math history" page
+
+2. Stop using the logo from the res folder and fetch the logo from the server. http://somehost:3000/jay.png
+
+3. Remove all boilerplate code and use annotations to inject stuff.
+
+4. Implement a chat page in the client. More info on the chat feature of the server can be found in the server READ.ME
