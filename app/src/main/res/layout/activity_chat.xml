@@ -9,11 +9,25 @@
     android:orientation="vertical"
     tools:context="com.jayway.pong.ChatActivity">
 
-    <EditText
-        android:id="@+id/chat_input"
-        android:text="input"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content" />
+    <RelativeLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal">
+
+        <Button
+            android:id="@+id/send_button"
+            android:text="Send"
+            android:layout_width="wrap_content"
+            android:layout_alignParentRight="true"
+            android:layout_height="wrap_content" />
+
+        <EditText
+            android:id="@+id/chat_input"
+            android:text=""
+            android:layout_toLeftOf="@+id/send_button"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content" />
+    </RelativeLayout>
 
     <TextView
         android:text="@string/hello_world"
