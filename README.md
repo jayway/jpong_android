@@ -17,3 +17,5 @@ Know of any other frameworks? add them here!
 1. Fetch data from the json feeds and populate the "Math history" page using some or all of the frameworks.
 2. Fetch the Jayway logo from the server.
 3. Remove all boilerplate code using annotations.
+
+Notes for intro talk:
