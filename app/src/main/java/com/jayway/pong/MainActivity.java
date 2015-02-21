@@ -1,17 +1,37 @@
 package com.jayway.pong;
 
+import android.content.Intent;
 import android.support.v7.app.ActionBarActivity;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.View;
+import android.widget.Button;
 
 
-public class MainActivity extends ActionBarActivity {
+public class MainActivity extends ActionBarActivity implements View.OnClickListener {
+
+    private Button mPlayButton;
+    private Button mMatchHistoryButton;
+    private Button mAboutButton;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+
+        setButtonListeners();
+    }
+
+    private void setButtonListeners() {
+        mPlayButton = (Button)findViewById(R.id.play_button);
+        mPlayButton.setOnClickListener(this);
+
+        mMatchHistoryButton = (Button)findViewById(R.id.match_history_button);
+        mMatchHistoryButton.setOnClickListener(this);
+
+        mAboutButton = (Button)findViewById(R.id.about_button);
+        mAboutButton.setOnClickListener(this);
     }
 
 
@@ -29,11 +49,29 @@ public class MainActivity extends ActionBarActivity {
         // as you specify a parent activity in AndroidManifest.xml.
         int id = item.getItemId();
 
-        //noinspection SimplifiableIfStatement
-        if (id == R.id.action_settings) {
-            return true;
-        }
-
         return super.onOptionsItemSelected(item);
+    }
+
+    @Override
+    public void onClick(View v) {
+        if (v == mPlayButton) {
+            goToPlay();
+        } else if (v == mMatchHistoryButton) {
+            goToMatchHistory();
+        } else if (v == mAboutButton) {
+            goToAbout();
+        }
+    }
+
+    private void goToAbout() {
+    }
+
+    private void goToMatchHistory() {
+        Intent intent = new Intent(this, MatchHistoryActivity.class);
+        startActivity(intent);
+    }
+
+    private void goToPlay() {
+
     }
 }
