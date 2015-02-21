@@ -64,6 +64,8 @@ public class MainActivity extends ActionBarActivity implements View.OnClickListe
     }
 
     private void goToAbout() {
+        Intent intent = new Intent(this, AboutActivity.class);
+        startActivity(intent);
     }
 
     private void goToMatchHistory() {
