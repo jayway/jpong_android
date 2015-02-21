@@ -8,22 +8,22 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.EditText;
 
+import com.github.nkzawa.emitter.Emitter;
+import com.github.nkzawa.socketio.client.IO;
+import com.github.nkzawa.socketio.client.Socket;
 import com.google.gson.Gson;
-import com.jayway.pong.json.request.AddPlayer;
-import com.jayway.pong.json.request.Message;
 
-import org.java_websocket.client.WebSocketClient;
-import org.java_websocket.handshake.ServerHandshake;
+import org.json.JSONException;
+import org.json.JSONObject;
 
-import java.net.URI;
 import java.net.URISyntaxException;
 
 
 public class ChatActivity extends ActionBarActivity {
 
-    private WebSocketClient webSocketClient;
-
     private Gson gson;
+
+    private Socket socket = null;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -31,10 +31,6 @@ public class ChatActivity extends ActionBarActivity {
         setContentView(R.layout.activity_chat);
 
         gson = new Gson();
-
-        connectWebSocket();
-
-        //addPlayer("Player 3");
 
         findViewById(R.id.send_button).setOnClickListener(new View.OnClickListener() {
             @Override
@@ -44,60 +40,82 @@ public class ChatActivity extends ActionBarActivity {
         });
     }
 
+    @Override
+    protected void onStart() {
+        super.onStart();
+        connectWebSocket();
+    }
+
+    @Override
+    protected void onStop() {
+        super.onStop();
+        socket.disconnect();
+    }
+
     private void connectWebSocket() {
-        URI uri;
+        Log.d("TAG", "connecting");
         try {
-            uri = new URI("ws://jaywaypongserver.herokuapp.com:80");
+            socket = IO.socket("http://jaywaypongserver.herokuapp.com");
+            //socket = IO.socket("http://192.168.0.116:3000");
         } catch (URISyntaxException e) {
             e.printStackTrace();
-            return;
         }
-
-
-        webSocketClient = new WebSocketClient(uri) {
-            @Override
-            public void onOpen(ServerHandshake serverHandshake) {
-                Log.i("Websocket", "Opened");
-                //webSocketClient.send("Hello from " + Build.MANUFACTURER + " " + Build.MODEL);
-                addPlayer("player test");
-            }
+        socket.on(Socket.EVENT_CONNECT, new Emitter.Listener() {
 
             @Override
-            public void onMessage(final String s) {
-                final String message = s;
-                runOnUiThread(new Runnable() {
-                    @Override
-                    public void run() {
-                        Log.d("TAG", "message from server: " + s);
-//                        TextView textView = (TextView) findViewById(R.id.chat_text);
-//                        textView.setText(textView.getText() + "\n" + message);
-                    }
-                });
+            public void call(Object... args) {
+                Log.d("TAG", "connected: " + socket.connected());
+                addPlayer("android player");
             }
+
+        }).on(Socket.EVENT_DISCONNECT, new Emitter.Listener() {
 
             @Override
-            public void onClose(int i, String s, boolean b) {
-                Log.i("Websocket", "Closed " + s + " bool: " + b + " i: " + i);
+            public void call(Object... args) {
+                Log.d("TAG", "disconnected " + args);
             }
+
+        }).on("players", new Emitter.Listener() {
 
             @Override
-            public void onError(Exception e) {
-                Log.i("Websocket", "Error " + e.getMessage());
+            public void call(Object... args) {
+                Log.d("TAG", "players " + args);
             }
-        };
 
-        Log.i("TAG", "connect to: "+uri.toASCIIString());
-        webSocketClient.connect();
+        }).on("message", new Emitter.Listener() {
+            @Override
+            public void call(Object... args) {
+                System.out.println("message: " + args[0]);
+            }
+
+        }).on("step", new Emitter.Listener() {
+
+            @Override
+            public void call(Object... args) {
+                Log.d("TAG", "step " + args);
+            }
+
+        }).on("winning", new Emitter.Listener() {
+
+            @Override
+            public void call(Object... args) {
+                Log.d("TAG", "winning " + args);
+            }
+
+        });
+        socket.connect();
+
     }
 
     private void addPlayer(String playerName) {
         if (playerName != null && playerName.length() > 0) {
-            AddPlayer addPlayer = new AddPlayer();
-            addPlayer.setPlayername(playerName);
-            String json = gson.toJson(addPlayer);
-            Log.d("TAG", "json: " + json);
-            webSocketClient.send(json);
-
+            JSONObject obj = null;
+            try {
+                obj = new JSONObject().put("playername", playerName);
+            } catch (JSONException e) {
+                e.printStackTrace();
+            }
+            socket.emit("add player", obj);
         }
     }
 
@@ -105,11 +123,13 @@ public class ChatActivity extends ActionBarActivity {
         EditText editText = (EditText) findViewById(R.id.chat_input);
         String text = editText.getText().toString();
         if (text != null && text.length() > 0) {
-            Message message = new Message();
-            message.setMessage(text);
-            String json = gson.toJson(message);
-            Log.d("TAG", "json: " + json);
-            webSocketClient.send(json);
+            JSONObject obj = null;
+            try {
+                obj = new JSONObject().put("message", text);
+            } catch (JSONException e) {
+                e.printStackTrace();
+            }
+            socket.emit("message", obj);
             editText.setText("");
         }
     }
