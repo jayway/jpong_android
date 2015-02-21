@@ -1,6 +1,5 @@
 package com.jayway.pong;
 
-import android.os.Build;
 import android.os.Bundle;
 import android.support.v7.app.ActionBarActivity;
 import android.util.Log;
@@ -8,7 +7,10 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.EditText;
-import android.widget.TextView;
+
+import com.google.gson.Gson;
+import com.jayway.pong.json.request.AddPlayer;
+import com.jayway.pong.json.request.Message;
 
 import org.java_websocket.client.WebSocketClient;
 import org.java_websocket.handshake.ServerHandshake;
@@ -19,14 +21,20 @@ import java.net.URISyntaxException;
 
 public class ChatActivity extends ActionBarActivity {
 
-    private WebSocketClient mWebSocketClient;
+    private WebSocketClient webSocketClient;
+
+    private Gson gson;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_chat);
 
+        gson = new Gson();
+
         connectWebSocket();
+
+        //addPlayer("Player 3");
 
         findViewById(R.id.send_button).setOnClickListener(new View.OnClickListener() {
             @Override
@@ -39,34 +47,37 @@ public class ChatActivity extends ActionBarActivity {
     private void connectWebSocket() {
         URI uri;
         try {
-            uri = new URI("ws://192.168.42.177:8080");
+            uri = new URI("ws://jaywaypongserver.herokuapp.com:80");
         } catch (URISyntaxException e) {
             e.printStackTrace();
             return;
         }
 
-        mWebSocketClient = new WebSocketClient(uri) {
+
+        webSocketClient = new WebSocketClient(uri) {
             @Override
             public void onOpen(ServerHandshake serverHandshake) {
                 Log.i("Websocket", "Opened");
-                mWebSocketClient.send("Hello from " + Build.MANUFACTURER + " " + Build.MODEL);
+                //webSocketClient.send("Hello from " + Build.MANUFACTURER + " " + Build.MODEL);
+                addPlayer("player test");
             }
 
             @Override
-            public void onMessage(String s) {
+            public void onMessage(final String s) {
                 final String message = s;
                 runOnUiThread(new Runnable() {
                     @Override
                     public void run() {
-                        TextView textView = (TextView) findViewById(R.id.chat_text);
-                        textView.setText(textView.getText() + "\n" + message);
+                        Log.d("TAG", "message from server: " + s);
+//                        TextView textView = (TextView) findViewById(R.id.chat_text);
+//                        textView.setText(textView.getText() + "\n" + message);
                     }
                 });
             }
 
             @Override
             public void onClose(int i, String s, boolean b) {
-                Log.i("Websocket", "Closed " + s);
+                Log.i("Websocket", "Closed " + s + " bool: " + b + " i: " + i);
             }
 
             @Override
@@ -74,14 +85,31 @@ public class ChatActivity extends ActionBarActivity {
                 Log.i("Websocket", "Error " + e.getMessage());
             }
         };
-        mWebSocketClient.connect();
+
+        Log.i("TAG", "connect to: "+uri.toASCIIString());
+        webSocketClient.connect();
+    }
+
+    private void addPlayer(String playerName) {
+        if (playerName != null && playerName.length() > 0) {
+            AddPlayer addPlayer = new AddPlayer();
+            addPlayer.setPlayername(playerName);
+            String json = gson.toJson(addPlayer);
+            Log.d("TAG", "json: " + json);
+            webSocketClient.send(json);
+
+        }
     }
 
     private void sendMessage() {
         EditText editText = (EditText) findViewById(R.id.chat_input);
         String text = editText.getText().toString();
         if (text != null && text.length() > 0) {
-            mWebSocketClient.send(text);
+            Message message = new Message();
+            message.setMessage(text);
+            String json = gson.toJson(message);
+            Log.d("TAG", "json: " + json);
+            webSocketClient.send(json);
             editText.setText("");
         }
     }

@@ -60,7 +60,7 @@ public class PongActivity extends ActionBarActivity {
     private void connectWebSocket() {
         URI uri;
         try {
-            uri = new URI("ws://192.168.42.177:8080");
+            uri = new URI("ws://:3000");
         } catch (URISyntaxException e) {
             e.printStackTrace();
             return;
