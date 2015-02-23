@@ -4,21 +4,24 @@ Agenda for 2015-02-27 competences-day.
 
 Try out some frameworks for fetching images/json data over the network and for annotating your app (getting rid of boilerplate code).
 
-Frameworks:
+Annotation / injection framework:
 
-Dagger2 - http://google.github.io/dagger/ - an annotation / injection framework
+Dagger2 - http://google.github.io/dagger/ 
 
-Android annotations - http://androidannotations.org/ - an annotation / injection framework
+Android annotations - http://androidannotations.org/
 
-Volley - http://developer.android.com/training/volley/index.html - Networking
+Butterknife - http://jakewharton.github.io/butterknife/
 
-Picaso - http://square.github.io/picasso/ - Image downloading and handling
+Robodjuce - https://github.com/roboguice/roboguice
 
-Butterknife - http://jakewharton.github.io/butterknife/ - an annotation / injection framework
+Networking:
 
-Spring - http://projects.spring.io/spring-android/ - Networking
+Volley - http://developer.android.com/training/volley/index.html
 
-Robodjuce - https://github.com/roboguice/roboguice - an annotation / injection framework
+Picaso - http://square.github.io/picasso/
+
+Spring - http://projects.spring.io/spring-android/
+
 
 Know of any other frameworks? add them here!
 
