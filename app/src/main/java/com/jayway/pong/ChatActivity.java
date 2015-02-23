@@ -61,7 +61,7 @@ public class ChatActivity extends ActionBarActivity {
             @Override
             public void call(Object... args) {
                 Log.d(TAG, "connected: " + socket.connected());
-                addPlayer("Android#" + Math.random() * (1 << 10));
+                addPlayer("Android#" + (int) (Math.random() * (1 << 10)));
             }
 
         }).on(Socket.EVENT_DISCONNECT, new Emitter.Listener() {
