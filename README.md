@@ -19,3 +19,9 @@ Know of any other frameworks? add them here!
 3. Remove all boilerplate code using annotations.
 
 Notes for intro talk:
+
+rekommenderat socket lib:
+https://github.com/nkzawa/socket.io-client.java
+
+lägga till gson:
+http://www.jetbrains.com/idea/help/configuring-module-dependencies-and-libraries.html#d1265012e472

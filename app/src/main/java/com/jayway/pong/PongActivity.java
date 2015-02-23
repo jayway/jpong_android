@@ -22,7 +22,7 @@ import java.net.URISyntaxException;
 
 public class PongActivity extends ActionBarActivity {
 
-    private WebSocketClient mWebSocketClient;
+    //private WebSocketClient mWebSocketClient;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -30,7 +30,7 @@ public class PongActivity extends ActionBarActivity {
 
         setContentView(new MyView(this));
 
-        connectWebSocket();
+        //connectWebSocket();
     }
 
     public class MyView extends View {
@@ -57,50 +57,50 @@ public class PongActivity extends ActionBarActivity {
         }
     }
 
-    private void connectWebSocket() {
-        URI uri;
-        try {
-            uri = new URI("ws://192.168.42.177:8080");
-        } catch (URISyntaxException e) {
-            e.printStackTrace();
-            return;
-        }
-
-        mWebSocketClient = new WebSocketClient(uri) {
-            @Override
-            public void onOpen(ServerHandshake serverHandshake) {
-                Log.i("Websocket", "Opened");
-                mWebSocketClient.send("Hello from " + Build.MANUFACTURER + " " + Build.MODEL);
-            }
-
-            @Override
-            public void onMessage(String s) {
-                final String message = s;
-                runOnUiThread(new Runnable() {
-                    @Override
-                    public void run() {
-                        TextView textView = (TextView) findViewById(R.id.chat_text);
-                        textView.setText(textView.getText() + "\n" + message);
-                    }
-                });
-            }
-
-            @Override
-            public void onClose(int i, String s, boolean b) {
-                Log.i("Websocket", "Closed " + s);
-            }
-
-            @Override
-            public void onError(Exception e) {
-                Log.i("Websocket", "Error " + e.getMessage());
-            }
-        };
-        mWebSocketClient.connect();
-    }
-
-    private void sendMessage(String message) {
-       mWebSocketClient.send(message);
-    }
+//    private void connectWebSocket() {
+//        URI uri;
+//        try {
+//            uri = new URI("ws://:3000");
+//        } catch (URISyntaxException e) {
+//            e.printStackTrace();
+//            return;
+//        }
+//
+//        mWebSocketClient = new WebSocketClient(uri) {
+//            @Override
+//            public void onOpen(ServerHandshake serverHandshake) {
+//                Log.i("Websocket", "Opened");
+//                mWebSocketClient.send("Hello from " + Build.MANUFACTURER + " " + Build.MODEL);
+//            }
+//
+//            @Override
+//            public void onMessage(String s) {
+//                final String message = s;
+//                runOnUiThread(new Runnable() {
+//                    @Override
+//                    public void run() {
+//                        TextView textView = (TextView) findViewById(R.id.chat_text);
+//                        textView.setText(textView.getText() + "\n" + message);
+//                    }
+//                });
+//            }
+//
+//            @Override
+//            public void onClose(int i, String s, boolean b) {
+//                Log.i("Websocket", "Closed " + s);
+//            }
+//
+//            @Override
+//            public void onError(Exception e) {
+//                Log.i("Websocket", "Error " + e.getMessage());
+//            }
+//        };
+//        mWebSocketClient.connect();
+//    }
+//
+//    private void sendMessage(String message) {
+//       mWebSocketClient.send(message);
+//    }
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {

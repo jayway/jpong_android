@@ -1,4 +1,4 @@
-package com.jayway.pong.json.generic;
+package com.jayway.pong.json.objects;
 
 /**
  * Created by erbsman on 2/20/15.

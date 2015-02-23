@@ -1,6 +1,6 @@
 package com.jayway.pong.json.request;
 
-import com.jayway.pong.json.generic.Paddle;
+import com.jayway.pong.json.objects.Paddle;
 
 /**
  * Created by erbsman on 2/20/15.

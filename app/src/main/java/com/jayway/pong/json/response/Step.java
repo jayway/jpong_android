@@ -1,7 +1,7 @@
 package com.jayway.pong.json.response;
 
-import com.jayway.pong.json.generic.Ball;
-import com.jayway.pong.json.generic.Paddle;
+import com.jayway.pong.json.objects.Ball;
+import com.jayway.pong.json.objects.Paddle;
 
 /**
  * Created by erbsman on 2/20/15.
