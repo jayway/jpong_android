@@ -12,7 +12,7 @@ Android annotations - http://androidannotations.org/
 
 Butterknife - http://jakewharton.github.io/butterknife/
 
-Robodjuce - https://github.com/roboguice/roboguice
+RoboGuice - https://github.com/roboguice/roboguice
 
 Networking:
 
@@ -21,6 +21,8 @@ Volley - http://developer.android.com/training/volley/index.html
 Picaso - http://square.github.io/picasso/
 
 Spring - http://projects.spring.io/spring-android/
+
+Retrofit - http://square.github.io/retrofit/
 
 
 Know of any other frameworks? add them here!
