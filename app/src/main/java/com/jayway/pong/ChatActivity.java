@@ -99,24 +99,8 @@ public class ChatActivity extends ActionBarActivity {
                     }
                 }
             }
-
-        }).on("step", new Emitter.Listener() {
-
-            @Override
-            public void call(Object... args) {
-                Log.d(TAG, "step " + args);
-            }
-
-        }).on("winning", new Emitter.Listener() {
-
-            @Override
-            public void call(Object... args) {
-                Log.d(TAG, "winning " + args);
-            }
-
         });
         socket.connect();
-
     }
 
     private void addPlayer(String playerName) {
