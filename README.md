@@ -27,12 +27,13 @@ Retrofit - http://square.github.io/retrofit/
 
 Know of any other frameworks? add them here!
 
+Suggestion: create a new branch for each framework you want to try out. That way the codebase will not be cluttered and compleatly broken by the time your on #3 or so.
 
-1. Fetch data from http://jaywaypongserver.herokuapp.com/match_history.json and populate the "Math history" page using volley or spring (or android annotations that also supports some networking via annotations).
+* Fetch data from http://jaywaypongserver.herokuapp.com/match_history.json and populate the "Math history" page using volley or spring (or android annotations that also supports some networking via annotations).
 The server can be found at https://github.com/jayway/KHelgGameServer if you want to run if localy.
 
-2. Stop using the logo from the res folder and fetch the logo from the server/internet, http://jaywaypongserver.herokuapp.com/jay.png or for example http://placekitten.com/202/202
+* Stop using the logo from the res folder and fetch the logo from the server/internet, http://jaywaypongserver.herokuapp.com/jay.png or for example http://placekitten.com/202/202
 
-3. Remove all boilerplate code and use annotations to inject stuff.
+* Remove all boilerplate code and use annotations to inject stuff.
 
-4. Implement a chat page in the client. More info on the chat feature of the server can be found in the server READ.ME
+* Implement a chat page in the client. More info on the chat feature of the server can be found in the server READ.ME
