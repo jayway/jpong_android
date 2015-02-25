@@ -27,7 +27,7 @@ Retrofit - http://square.github.io/retrofit/
 
 Know of any other frameworks? add them here!
 
-Suggestion: create a new branch for each framework you want to try out. That way the codebase will not be cluttered and compleatly broken by the time your on #3 or so.
+Suggestion: create a new branch for each framework you want to try out. That way the code-base will not be cluttered and completely broken by the time your trying out the third framework or so.
 
 * Fetch data from http://jaywaypongserver.herokuapp.com/match_history.json and populate the "Math history" page using volley or spring (or android annotations that also supports some networking via annotations).
 The server can be found at https://github.com/jayway/KHelgGameServer if you want to run if localy.
