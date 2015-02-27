@@ -11,6 +11,8 @@ public class Step {
 
     @Override
     public String toString() {
-        return "Step: " + ball + " playerPaddle=" + playerPaddle + " remotePlayerPaddle=" + remotePlayerPaddle;
+        return "Step: " + ball + " playerPaddle=" + playerPaddle + " remotePlayerPaddle=" +
+                remotePlayerPaddle + players.player1.name + ", " +
+                remotePlayerPaddle + players.player2.name;
     }
 }

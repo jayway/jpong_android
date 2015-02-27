@@ -91,7 +91,7 @@ public class PongServer {
                     try {
                         JSONObject jsonObject = (JSONObject) args[0];
                         Step step = gson.fromJson(jsonObject.toString(), Step.class);
-                        //Log.d("pong", "STEP:" + step.toString());
+                        Log.d("pong", "STEP:" + step.toString());
 
                         for (PongListener listener : pongListeners) {
                             listener.onStep(step);

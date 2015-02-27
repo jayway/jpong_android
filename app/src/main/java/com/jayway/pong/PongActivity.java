@@ -9,16 +9,9 @@ import android.support.v7.app.ActionBarActivity;
 import android.util.Log;
 import android.view.View;
 
-import com.github.nkzawa.emitter.Emitter;
-import com.github.nkzawa.socketio.client.IO;
-import com.github.nkzawa.socketio.client.Socket;
 import com.jayway.pong.model.Step;
 import com.jayway.pong.server.PongServer;
 
-import org.json.JSONException;
-import org.json.JSONObject;
-
-import java.net.URISyntaxException;
 import java.util.List;
 
 
@@ -60,8 +53,9 @@ public class PongActivity extends ActionBarActivity implements PongServer.PongLi
         view.postInvalidate();
         currentStep = step;
 
-        int x = - (currentStep.playerPaddle.x - currentStep.ball.x);
-        //Log.d("TAG", "move x: "+x);
+        int x = -((currentStep.playerPaddle.x + currentStep.playerPaddle.width / 2) -
+                (currentStep.ball.x + currentStep.ball.radius / 2));
+        Log.d("TAG", "move x: " + x);
 
         pongServer.move(x);
     }
@@ -89,18 +83,19 @@ public class PongActivity extends ActionBarActivity implements PongServer.PongLi
 
             if (currentStep != null) {
 
-                float scaleX = (float)x/currentStep.bounds.width;
-                float scaleY = (float)y/currentStep.bounds.height;
+                float scaleX = (float) x / currentStep.bounds.width;
+                float scaleY = (float) y / currentStep.bounds.height;
                 canvas.scale(scaleX, scaleY);
 
                 radius = currentStep.ball.radius;
-                paint.setColor(0xffc70025);
+                paint.setColor(0xffff0000);
                 canvas.drawCircle(currentStep.ball.x, currentStep.ball.y, radius, paint);
-
+                paint.setColor(0xff00ff00);
                 canvas.drawRect(currentStep.playerPaddle.x, currentStep.playerPaddle.y,
                         currentStep.playerPaddle.x + currentStep.playerPaddle.width,
                         currentStep.playerPaddle.y + currentStep.playerPaddle.height,
                         paint);
+                paint.setColor(0xff0000ff);
                 canvas.drawRect(currentStep.remotePlayerPaddle.x, currentStep.remotePlayerPaddle.y,
                         currentStep.remotePlayerPaddle.x + currentStep.remotePlayerPaddle.width,
                         currentStep.remotePlayerPaddle.y + currentStep.remotePlayerPaddle.height,
