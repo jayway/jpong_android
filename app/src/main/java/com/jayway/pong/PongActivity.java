@@ -83,6 +83,11 @@ public class PongActivity extends ActionBarActivity implements PongServer.PongLi
             canvas.drawPaint(paint);
 
             if (currentStep != null) {
+
+                float scaleX = (float)x/currentStep.bounds.width;
+                float scaleY = (float)y/currentStep.bounds.height;
+                canvas.scale(scaleX, scaleY);
+
                 radius = currentStep.ball.radius;
                 paint.setColor(0xffc70025);
                 canvas.drawCircle(currentStep.ball.x, currentStep.ball.y, radius, paint);
@@ -95,6 +100,7 @@ public class PongActivity extends ActionBarActivity implements PongServer.PongLi
                         currentStep.remotePlayerPaddle.x + currentStep.remotePlayerPaddle.width,
                         currentStep.remotePlayerPaddle.y + currentStep.remotePlayerPaddle.height,
                         paint);
+
             }
 
         }
