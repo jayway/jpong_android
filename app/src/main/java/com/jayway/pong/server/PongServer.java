@@ -1,13 +1,14 @@
 package com.jayway.pong.server;
 
-
 import android.util.Log;
 
 import com.github.nkzawa.emitter.Emitter;
 import com.github.nkzawa.socketio.client.IO;
 import com.github.nkzawa.socketio.client.Socket;
 import com.google.gson.Gson;
+import com.jayway.pong.model.Message;
 import com.jayway.pong.model.Step;
+import com.jayway.pong.model.Winning;
 
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -19,16 +20,20 @@ import java.util.List;
 public class PongServer {
 
     private static final String TAG = PongServer.class.getCanonicalName();
-    Gson gson = new Gson();
+    private Gson gson = new Gson();
     private Socket socket = null;
     private List<PongListener> pongListeners = new ArrayList<>();
 
+    private String userName = "jennykallehannes #" + (int) (Math.random() * (1 << 10));
+
     public interface PongListener {
-        public void onMessage(String message);
+        public void onMessage(Message message);
 
         public void onPlayers(List<String> players);
 
         public void onStep(Step step);
+
+        public void onWinning(Winning winning);
     }
 
     public void addPongListener(PongListener listener) {
@@ -37,6 +42,10 @@ public class PongServer {
 
     public void disconnect() {
         socket.disconnect();
+    }
+
+    public String getUserName() {
+        return userName;
     }
 
     public void connectWebSocket() {
@@ -49,10 +58,9 @@ public class PongServer {
         socket.on(Socket.EVENT_CONNECT, new Emitter.Listener() {
             @Override
             public void call(Object... args) {
-                Log.d(TAG, "connected: " + socket.connected());
-                addPlayer("jennykallehannes #" + (int) (Math.random() * (1 << 10)));
+                Log.d(TAG, "connected: " + socket.connected() + " " + getUserName());
+                addPlayer(getUserName());
             }
-
         }).on(Socket.EVENT_DISCONNECT, new Emitter.Listener() {
 
             @Override
@@ -73,9 +81,10 @@ public class PongServer {
                 Log.d(TAG, "message");
                 if (args != null && args.length > 0 && args[0] instanceof JSONObject) {
                     try {
-                        final String text = ((JSONObject) args[0]).getString("message");
+                        JSONObject jsonObject = ((JSONObject) args[0]);
+                        Message message = gson.fromJson(jsonObject.toString(), Message.class);
                         for (PongListener listener : pongListeners) {
-                            listener.onMessage(text);
+                            listener.onMessage(message);
                         }
 
                     } catch (Exception e) {
@@ -87,19 +96,33 @@ public class PongServer {
             @Override
             public void call(Object... args) {
                 //Log.d(TAG, "step");
-
-                    try {
-                        JSONObject jsonObject = (JSONObject) args[0];
-                        Step step = gson.fromJson(jsonObject.toString(), Step.class);
-                        Log.d("pong", "STEP:" + step.toString());
-
-                        for (PongListener listener : pongListeners) {
-                            listener.onStep(step);
-                        }
-                    } catch (Exception e) {
-
+                try {
+                    JSONObject jsonObject = (JSONObject) args[0];
+                    Step step = gson.fromJson(jsonObject.toString(), Step.class);
+                    //Log.d("pong", "STEP:" + step.toString());
+                    Log.d("", "Players: " + step.players.player1.name + " " + step.players.player2.name);
+                    for (PongListener listener : pongListeners) {
+                        listener.onStep(step);
                     }
+                } catch (Exception e) {
 
+                }
+            }
+        }).on("winning", new Emitter.Listener() {
+            @Override
+            public void call(Object... args) {
+                Log.d(TAG, "Winning");
+                try {
+                    JSONObject jsonObject = (JSONObject) args[0];
+                    Winning winning = gson.fromJson(jsonObject.toString(), Winning.class);
+                    Log.d("pong", "Winning:" + winning.toString());
+
+                    for (PongListener listener : pongListeners) {
+                        listener.onWinning(winning);
+                    }
+                } catch (Exception e) {
+
+                }
             }
         });
 
@@ -126,13 +149,12 @@ public class PongServer {
             e.printStackTrace();
         }
         socket.emit("ready", obj);
-
     }
 
     public void move(int x) {
         JSONObject obj = null;
         try {
-            obj = new JSONObject().put("move", "{paddle: {x: "+x+", y:0}}");
+            obj = new JSONObject().put("move", "{paddle: {x: " + x + ", y:0}}");
         } catch (JSONException e) {
             e.printStackTrace();
         }

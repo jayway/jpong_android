@@ -2,21 +2,15 @@ package com.jayway.pong;
 
 import android.os.Bundle;
 import android.support.v7.app.ActionBarActivity;
-import android.util.Log;
 import android.view.View;
 import android.widget.EditText;
 import android.widget.TextView;
 
-import com.github.nkzawa.emitter.Emitter;
-import com.github.nkzawa.socketio.client.IO;
-import com.github.nkzawa.socketio.client.Socket;
+import com.jayway.pong.model.Message;
 import com.jayway.pong.model.Step;
+import com.jayway.pong.model.Winning;
 import com.jayway.pong.server.PongServer;
 
-import org.json.JSONException;
-import org.json.JSONObject;
-
-import java.net.URISyntaxException;
 import java.util.List;
 
 import static com.jayway.pong.server.PongServer.PongListener;
@@ -45,14 +39,14 @@ public class ChatActivity extends ActionBarActivity implements PongListener {
                 EditText editText = (EditText) findViewById(R.id.chat_input);
                 String text = editText.getText().toString();
                 pongServer.sendMessage(text);
-                addChatMessage(text);
+                addChatMessage(new Message(pongServer.getUserName(), text));
                 editText.setText("");
             }
         });
     }
 
     @Override
-    public void onMessage(String message) {
+    public void onMessage(Message message) {
         addChatMessage(message);
     }
 
@@ -66,12 +60,17 @@ public class ChatActivity extends ActionBarActivity implements PongListener {
 
     }
 
-    private void addChatMessage(final String message) {
+    @Override
+    public void onWinning(Winning winning) {
+
+    }
+
+    private void addChatMessage(final Message message) {
         runOnUiThread(new Runnable() {
             @Override
             public void run() {
                 StringBuffer tv = new StringBuffer();
-                tv.append(message);
+                tv.append(message.player + " : " + message.message );
                 tv.append("\n");
                 tv.append(chatView.getText());
                 chatView.setText(tv.toString());

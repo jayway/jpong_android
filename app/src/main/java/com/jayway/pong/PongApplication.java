@@ -28,4 +28,8 @@ public class PongApplication extends Application {
         return pongServer;
     }
 
+    public String myUserName() {
+        return pongServer.getUserName();
+    }
+
 }
