@@ -56,9 +56,9 @@ public class PongActivity extends ActionBarActivity implements PongServer.PongLi
 
     @Override
     public void onStep(Step step) {
-        Log.d("", "PongActivity");
-        view.postInvalidate();
 
+        view.postInvalidate();
+        currentStep = step;
     }
 
     public class MyView extends View {
@@ -75,15 +75,28 @@ public class PongActivity extends ActionBarActivity implements PongServer.PongLi
             // You might want to replace this with some paddles and a ball for pong...
             int x = getWidth();
             int y = getHeight();
-            Log.d("", "x: " + x + " y: " + y);
             int radius;
-            radius = (int) (Math.min(canvas.getWidth(), canvas.getHeight()) * (3f / 5f)) / 2;
+
             Paint paint = new Paint();
             paint.setStyle(Paint.Style.FILL);
             paint.setColor(Color.WHITE);
             canvas.drawPaint(paint);
-            paint.setColor(0xffc70025);
-            canvas.drawCircle(x / 2, y / 2, radius, paint);
+
+            if (currentStep != null) {
+                radius = currentStep.ball.radius;
+                paint.setColor(0xffc70025);
+                canvas.drawCircle(currentStep.ball.x, currentStep.ball.y, radius, paint);
+
+                canvas.drawRect(currentStep.playerPaddle.x, currentStep.playerPaddle.y,
+                        currentStep.playerPaddle.x + currentStep.playerPaddle.width,
+                        currentStep.playerPaddle.y + currentStep.playerPaddle.height,
+                        paint);
+                canvas.drawRect(currentStep.remotePlayerPaddle.x, currentStep.remotePlayerPaddle.y,
+                        currentStep.remotePlayerPaddle.x + currentStep.remotePlayerPaddle.width,
+                        currentStep.remotePlayerPaddle.y + currentStep.remotePlayerPaddle.height,
+                        paint);
+            }
+
         }
     }
 
@@ -103,7 +116,6 @@ public class PongActivity extends ActionBarActivity implements PongServer.PongLi
         }
     }
     */
-
 
 
 }

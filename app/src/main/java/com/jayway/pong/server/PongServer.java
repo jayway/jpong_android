@@ -50,7 +50,7 @@ public class PongServer {
             @Override
             public void call(Object... args) {
                 Log.d(TAG, "connected: " + socket.connected());
-                addPlayer("jennykallehannes2");
+                addPlayer("jennykallehannes #" + (int) (Math.random() * (1 << 10)));
             }
 
         }).on(Socket.EVENT_DISCONNECT, new Emitter.Listener() {

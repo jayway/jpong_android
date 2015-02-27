@@ -5,10 +5,10 @@ package com.jayway.pong.model;
  */
 public class Paddle {
 
-    int x;
-    int y;
-    int width;
-    int height;
+    public int x;
+    public int y;
+    public int width;
+    public int height;
 
     public Paddle(int x, int y, int width, int height) {
         this.x = x;

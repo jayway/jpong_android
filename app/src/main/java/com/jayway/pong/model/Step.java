@@ -1,9 +1,6 @@
 package com.jayway.pong.model;
 
 
-import org.json.JSONException;
-import org.json.JSONObject;
-
 public class Step {
 
     public Ball ball;

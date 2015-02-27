@@ -5,8 +5,8 @@ package com.jayway.pong.model;
  */
 public class Player {
 
-    String name;
-    int score;
+    public String name;
+    public int score;
 
     public Player(String name, int score) {
         this.name = name;

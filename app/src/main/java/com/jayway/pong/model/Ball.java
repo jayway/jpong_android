@@ -6,11 +6,11 @@ import org.json.JSONObject;
  * Created by Hannes Gruber on 2015-02-27.
  */
 public class Ball {
-    int x;
-    int y;
-    int x_speed;
-    int y_speed;
-    int radius;
+    public int x;
+    public int y;
+    public int x_speed;
+    public int y_speed;
+    public int radius;
 
     public Ball(int x, int y, int x_speed, int y_speed, int radius) {
         this.x = x;
