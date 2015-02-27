@@ -12,89 +12,47 @@ import android.view.View;
 import com.github.nkzawa.emitter.Emitter;
 import com.github.nkzawa.socketio.client.IO;
 import com.github.nkzawa.socketio.client.Socket;
+import com.jayway.pong.model.Step;
+import com.jayway.pong.server.PongServer;
 
 import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.net.URISyntaxException;
+import java.util.List;
 
 
-public class PongActivity extends ActionBarActivity {
+public class PongActivity extends ActionBarActivity implements PongServer.PongListener {
 
     private static final String TAG = PongActivity.class.getCanonicalName();
-    private Socket socket;
+    private PongServer pongServer;
 
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
+        pongServer = ((PongApplication) getApplication()).getPongServer();
+        pongServer.addPongListener(this);
         setContentView(new MyView(this));
+
+        pongServer.ready(); //TODO: handle error if not connected
     }
 
-    private void connectWebSocket() {
-        Log.d(TAG, "connecting");
-        try {
-            socket = IO.socket("http://jaywaypongserver.herokuapp.com");
-        } catch (URISyntaxException e) {
-            e.printStackTrace();
-        }
-        socket.on(com.github.nkzawa.socketio.client.Socket.EVENT_CONNECT, new Emitter.Listener() {
 
-            @Override
-            public void call(Object... args) {
-                Log.d(TAG, "connected: " + socket.connected());
-                addPlayer("Android#" + (int) (Math.random() * (1 << 10)));
-            }
+    @Override
+    public void onMessage(String message) {
 
-        }).on(com.github.nkzawa.socketio.client.Socket.EVENT_DISCONNECT, new Emitter.Listener() {
-
-            @Override
-            public void call(Object... args) {
-                Log.d(TAG, "disconnected " + args);
-            }
-
-        }).on("players", new Emitter.Listener() {
-
-            @Override
-            public void call(Object... args) {
-                Log.d(TAG, "players " + args);
-            }
-
-        }).on("message", new Emitter.Listener() {
-            @Override
-            public void call(Object... args) {
-                if (args != null && args.length > 0 && args[0] instanceof JSONObject) {
-                    try {
-                        final String text = ((JSONObject) args[0]).getString("message");
-                        runOnUiThread(new Runnable() {
-                            @Override
-                            public void run() {
-                                StringBuffer tv = new StringBuffer();
-                                tv.append(text);
-                                tv.append("\n");
-
-                            }
-                        });
-                    } catch (JSONException e) {
-                        e.printStackTrace();
-                    }
-                }
-            }
-        });
-        socket.connect();
     }
 
-    private void addPlayer(String playerName) {
-        if (playerName != null && playerName.length() > 0) {
-            JSONObject obj = null;
-            try {
-                obj = new JSONObject().put("playername", playerName);
-            } catch (JSONException e) {
-                e.printStackTrace();
-            }
-            socket.emit("add player", obj);
-        }
+    @Override
+    public void onPlayers(List<String> players) {
+
+    }
+
+    @Override
+    public void onStep(Step step) {
+
     }
 
     public class MyView extends View {
