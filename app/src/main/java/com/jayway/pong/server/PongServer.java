@@ -6,6 +6,7 @@ import android.util.Log;
 import com.github.nkzawa.emitter.Emitter;
 import com.github.nkzawa.socketio.client.IO;
 import com.github.nkzawa.socketio.client.Socket;
+import com.google.gson.Gson;
 import com.jayway.pong.model.Step;
 
 import org.json.JSONException;
@@ -18,6 +19,7 @@ import java.util.List;
 public class PongServer {
 
     private static final String TAG = PongServer.class.getCanonicalName();
+    Gson gson = new Gson();
     private Socket socket = null;
     private List<PongListener> pongListeners = new ArrayList<>();
 
@@ -48,7 +50,7 @@ public class PongServer {
             @Override
             public void call(Object... args) {
                 Log.d(TAG, "connected: " + socket.connected());
-                addPlayer("jennykallehannes");
+                addPlayer("jennykallehannes2");
             }
 
         }).on(Socket.EVENT_DISCONNECT, new Emitter.Listener() {
@@ -87,11 +89,13 @@ public class PongServer {
                 Log.d(TAG, "step");
                 if (args != null && args.length > 0 && args[0] instanceof JSONObject) {
                     try {
-                        final String text = ((JSONObject) args[0]).getString("message");
-                        for (PongListener listener : pongListeners) {
-                            listener.onStep(new Step());
-                        }
+                        JSONObject jsonObject = (JSONObject) args[0];
+                        Step step = gson.fromJson(jsonObject.toString(), Step.class);
+                        Log.d("pong", "STEP:" + step.toString());
 
+                        for (PongListener listener : pongListeners) {
+                            listener.onStep(step);
+                        }
                     } catch (Exception e) {
 
                     }
