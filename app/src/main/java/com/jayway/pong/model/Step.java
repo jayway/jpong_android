@@ -3,6 +3,15 @@ package com.jayway.pong.model;
 
 public class Step {
 
+    public Ball ball;
+    public Paddle playerPaddle;
+    public Paddle remotePlayerPaddle;
+    public Players players;
+    public Bounds bounds;
+
+
+
+
     /*
     {
         ball: {x:10, y: 300, x_speed: 3, y_speed: 5, radius:5},
