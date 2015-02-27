@@ -136,7 +136,7 @@ public class PongServer {
         } catch (JSONException e) {
             e.printStackTrace();
         }
-        socket.emit("ready", obj);
+        socket.emit("move", obj);
 
     }
 
