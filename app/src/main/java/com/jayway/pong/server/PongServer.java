@@ -87,7 +87,7 @@ public class PongServer {
             @Override
             public void call(Object... args) {
                 Log.d(TAG, "step");
-                if (args != null && args.length > 0 && args[0] instanceof JSONObject) {
+
                     try {
                         JSONObject jsonObject = (JSONObject) args[0];
                         Step step = gson.fromJson(jsonObject.toString(), Step.class);
@@ -99,7 +99,7 @@ public class PongServer {
                     } catch (Exception e) {
 
                     }
-                }
+
             }
         });
 

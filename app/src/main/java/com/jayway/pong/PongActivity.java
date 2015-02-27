@@ -26,6 +26,9 @@ public class PongActivity extends ActionBarActivity implements PongServer.PongLi
 
     private static final String TAG = PongActivity.class.getCanonicalName();
     private PongServer pongServer;
+    private MyView view;
+
+    private Step currentStep;
 
 
     @Override
@@ -34,7 +37,8 @@ public class PongActivity extends ActionBarActivity implements PongServer.PongLi
 
         pongServer = ((PongApplication) getApplication()).getPongServer();
         pongServer.addPongListener(this);
-        setContentView(new MyView(this));
+        view = new MyView(this);
+        setContentView(view);
 
         pongServer.ready(); //TODO: handle error if not connected
     }
@@ -52,6 +56,8 @@ public class PongActivity extends ActionBarActivity implements PongServer.PongLi
 
     @Override
     public void onStep(Step step) {
+        Log.d("", "PongActivity");
+        view.postInvalidate();
 
     }
 
@@ -69,6 +75,7 @@ public class PongActivity extends ActionBarActivity implements PongServer.PongLi
             // You might want to replace this with some paddles and a ball for pong...
             int x = getWidth();
             int y = getHeight();
+            Log.d("", "x: " + x + " y: " + y);
             int radius;
             radius = (int) (Math.min(canvas.getWidth(), canvas.getHeight()) * (3f / 5f)) / 2;
             Paint paint = new Paint();
@@ -79,6 +86,23 @@ public class PongActivity extends ActionBarActivity implements PongServer.PongLi
             canvas.drawCircle(x / 2, y / 2, radius, paint);
         }
     }
+
+
+     /*
+    {
+        ball: {x:10, y: 300, x_speed: 3, y_speed: 5, radius:5},
+        playerPaddle: {x:106, y: 400, width:50, height:10},
+        remotePlayerPaddle: {x:100, y: 0,width:50, height:10},
+        players: {
+            player1: {name:"Albin", score:3},
+            player2: {name:"Christian", score:1}
+        },
+        bounds: {
+            width: 400,
+                    height: 600
+        }
+    }
+    */
 
 
 
