@@ -47,6 +47,12 @@ public class PongActivity extends ActionBarActivity implements PongServer.PongLi
     }
 
     @Override
+    public void onBackPressed() {
+        super.onBackPressed();
+        finish();
+    }
+
+    @Override
     public void onPlayers(List<String> players) {
 
     }
@@ -128,15 +134,15 @@ public class PongActivity extends ActionBarActivity implements PongServer.PongLi
 
 
                 paint.setColor(Color.BLACK);
-                paint.setTextSize(20);
+                paint.setTextSize(12);
 
                 canvas.drawText(currentStep.players.player1.name + " : " + currentStep.players.player1.score,
-                        scaleX / 2,
-                        25,
+                        20,
+                        200,
                         paint);
-                canvas.drawText(currentStep.players.player2.name + " : " + currentStep.players.player1.score,
-                        scaleX / 2,
-                        50,
+                canvas.drawText(currentStep.players.player2.name + " : " + currentStep.players.player2.score,
+                        20,
+                        220,
                         paint);
 
             }
