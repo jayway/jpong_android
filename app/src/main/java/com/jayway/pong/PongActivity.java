@@ -89,9 +89,9 @@ public class PongActivity extends ActionBarActivity implements PongServer.PongLi
         if (!isWinning) {
             view.postInvalidate();
             currentStep = step;
-            int x = -(currentStep.playerPaddle.x - currentStep.ball.x);
-            //Log.d("TAG", "move x: "+x);
-            pongServer.move(x);
+            int x = (currentStep.playerPaddle.x - currentStep.ball.x);
+
+            pongServer.move(0, 0);
         }
     }
 

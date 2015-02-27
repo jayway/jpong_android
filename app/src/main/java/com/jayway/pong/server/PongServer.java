@@ -151,15 +151,16 @@ public class PongServer {
         socket.emit("ready", obj);
     }
 
-    public void move(int x) {
+    public void move(int x, int y) {
+
+        String s = "{\n" + "paddle : { x: " + x + ", y:" + y + "}}";
         JSONObject obj = null;
         try {
-            obj = new JSONObject().put("move", "{paddle: {x: " + x + ", y:0}}");
+            obj = new JSONObject(s);
         } catch (JSONException e) {
             e.printStackTrace();
         }
         socket.emit("move", obj);
-
     }
 
     public void sendMessage(String text) {
