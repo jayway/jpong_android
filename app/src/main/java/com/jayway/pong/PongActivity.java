@@ -59,6 +59,11 @@ public class PongActivity extends ActionBarActivity implements PongServer.PongLi
 
         view.postInvalidate();
         currentStep = step;
+
+        int x = - (currentStep.playerPaddle.x - currentStep.ball.x);
+        Log.d("TAG", "move x: "+x);
+
+        pongServer.move(x);
     }
 
     public class MyView extends View {

@@ -64,7 +64,7 @@ public class PongServer {
 
             @Override
             public void call(Object... args) {
-                Log.d(TAG, "players " + args);
+                //Log.d(TAG, "players " + args);
             }
 
         }).on("message", new Emitter.Listener() {
@@ -86,12 +86,12 @@ public class PongServer {
         }).on("step", new Emitter.Listener() {
             @Override
             public void call(Object... args) {
-                Log.d(TAG, "step");
+                //Log.d(TAG, "step");
 
                     try {
                         JSONObject jsonObject = (JSONObject) args[0];
                         Step step = gson.fromJson(jsonObject.toString(), Step.class);
-                        Log.d("pong", "STEP:" + step.toString());
+                        //Log.d("pong", "STEP:" + step.toString());
 
                         for (PongListener listener : pongListeners) {
                             listener.onStep(step);
@@ -122,6 +122,17 @@ public class PongServer {
         JSONObject obj = null;
         try {
             obj = new JSONObject().put("ready", "");
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+        socket.emit("ready", obj);
+
+    }
+
+    public void move(int x) {
+        JSONObject obj = null;
+        try {
+            obj = new JSONObject().put("move", "{paddle: {x: "+x+", y:0}}");
         } catch (JSONException e) {
             e.printStackTrace();
         }
